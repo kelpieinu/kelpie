@@ -413,7 +413,7 @@ contract Ownable is Context {
 }
 
 
-contract Kelpie is Context, IERC20, Ownable {
+contract LFGMOON is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -430,12 +430,12 @@ contract Kelpie is Context, IERC20, Ownable {
     uint256 private _tFeeTotal;
 
 
-    string private _name = 'Kelpie Inu';
-    string private _symbol = 'KELPIE';
+    string private _name = 'LFGMOON Inu';
+    string private _symbol = 'LFGMOON';
     uint8 private _decimals = 9;
     uint256 public _maxTxAmount = 5000000 * 10**6 * 10**9;
 
-    uint8 public transfertimeout = 60;
+    uint8 public transfertimeout = 30;
     address public uniswapPair;
     mapping (address => uint256) public lastBuy; 
 
@@ -506,7 +506,7 @@ contract Kelpie is Context, IERC20, Ownable {
     
     function setMaxTxPercent(uint256 maxTxPercent) external onlyOwner() {
         _maxTxAmount = _tTotal.mul(maxTxPercent).div(
-            10**2
+            10**1
         );
     }
 
