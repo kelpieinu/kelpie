@@ -579,7 +579,7 @@ contract Kelpie is Context, IERC20, Ownable {
 
         //check if sell
         if (recipient == uniswapPair){
-            require(block.timestamp + transfertimeout >= lastBuy[sender], "currently in lock period");
+            require(block.timestamp >= lastBuy[sender] + transfertimeout, "currently in lock period");
         }        
 
         if (_isExcluded[sender] && !_isExcluded[recipient]) {
