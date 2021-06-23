@@ -413,7 +413,7 @@ contract Ownable is Context {
 }
 
 
-contract LFGMOON is Context, IERC20, Ownable {
+contract Kelpie is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -430,8 +430,8 @@ contract LFGMOON is Context, IERC20, Ownable {
     uint256 private _tFeeTotal;
 
 
-    string private _name = 'LFGMOON Inu';
-    string private _symbol = 'LFGMOON';
+    string private _name = 'Kelpie Inu';
+    string private _symbol = 'KELPIE';
     uint8 private _decimals = 9;
     uint256 public _maxTxAmount = 5000000 * 10**6 * 10**9;
 
