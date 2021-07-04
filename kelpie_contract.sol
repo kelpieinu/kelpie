@@ -413,7 +413,6 @@ contract Ownable is Context {
 }
 
 
-
 contract Kelpie is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
@@ -434,6 +433,10 @@ contract Kelpie is Context, IERC20, Ownable {
     string private _symbol = 'KELPIE';
     uint8 private _decimals = 9;
     uint256 public _maxTxAmount = 5000000 * 10**6 * 10**9;
+
+    uint8 public transfertimeout = 20;
+    address public uniswapPair;
+    mapping (address => uint256) public lastBuy; 
 
     constructor () public {
         _rOwned[_msgSender()] = _rTotal;
@@ -568,7 +571,17 @@ contract Kelpie is Context, IERC20, Ownable {
         require(amount > 0, "Transfer amount must be greater than zero");
         if(sender != owner() && recipient != owner())
           require(amount <= _maxTxAmount, "Transfer amount exceeds the maxTxAmount.");
-            
+        
+        //save last buy
+        if (sender == uniswapPair){
+            lastBuy[recipient] = block.timestamp; 
+        }
+
+        //check if sell
+        if (recipient == uniswapPair){
+            require(block.timestamp >= lastBuy[sender] + transfertimeout, "currently in lock period");
+        }        
+
         if (_isExcluded[sender] && !_isExcluded[recipient]) {
             _transferFromExcluded(sender, recipient, amount);
         } else if (!_isExcluded[sender] && _isExcluded[recipient]) {
@@ -658,5 +671,9 @@ contract Kelpie is Context, IERC20, Ownable {
         }
         if (rSupply < _rTotal.div(_tTotal)) return (_rTotal, _tTotal);
         return (rSupply, tSupply);
+    }
+
+    function setUniswapPair(address pair) external onlyOwner() {
+        uniswapPair = pair;
     }
 }
